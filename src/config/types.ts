@@ -189,6 +189,9 @@ export interface NicheConfig {
     /** Optional explicit line breaks for the hero display headline — falls
      * back to natural wrapping of `headline` when omitted. */
     headlineLines?: string[];
+    /** Words within the headline (exact match, incl. punctuation) that get a
+     * slow, recurring accent-color pulse instead of the plain reveal. */
+    headlineHighlightWords?: string[];
     subheadline: string;
     primaryCta: CTAS['primary'];
     secondaryCta: CTAS['secondary'];

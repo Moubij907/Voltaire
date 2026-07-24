@@ -27,7 +27,7 @@ export function TrustStrip() {
   ];
 
   return (
-    <section className="relative z-20 -mt-20 sm:-mt-24 lg:-mt-24">
+    <section className="relative z-20 -mt-20 sm:-mt-24 lg:-mt-[130px]">
       <Container>
         <motion.div
           variants={container}

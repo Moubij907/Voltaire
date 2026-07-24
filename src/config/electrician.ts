@@ -42,6 +42,7 @@ export const electrician: NicheConfig = {
     eyebrow: 'Licensed Master Electricians · NYC',
     headline: 'Power, designed with intent.',
     headlineLines: ['Power, designed with', 'intent.'],
+    headlineHighlightWords: ['designed', 'intent.'],
     subheadline:
       'We plan, upgrade, and refine electrical systems for homes and businesses that expect more than a working outlet — they expect a system built to last thirty years.',
     primaryCta: { label: 'Request a consultation', to: '/contact' },

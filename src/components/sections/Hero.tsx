@@ -19,6 +19,11 @@ const headlineWord = {
   visible: { y: '0%', transition: { duration: 1, ease: EASE } },
 };
 
+// Mirrors --ink and the accent-600 token — a literal pair so the color
+// keyframes below can animate smoothly (framer can't interpolate through a
+// `rgb(var(--x))` reference).
+const HIGHLIGHT_COLORS = ['rgb(20, 19, 17)', 'rgb(202, 138, 4)', 'rgb(20, 19, 17)'];
+
 export function Hero() {
   const { hero } = useConfig();
   const sectionRef = useRef<HTMLElement>(null);
@@ -29,6 +34,7 @@ export function Hero() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.85], [1, reducedMotion ? 1 : 0.35]);
 
   const headlineLines = hero.headlineLines ?? [hero.headline];
+  const highlightWords = hero.headlineHighlightWords ?? [];
 
   return (
     <section
@@ -63,13 +69,29 @@ export function Hero() {
               >
                 {headlineLines.map((line, li) => (
                   <span key={li} className="block">
-                    {line.split(' ').map((word, wi) => (
-                      <span key={wi} className="inline-block overflow-hidden pb-1 pr-[0.22em] align-bottom last:pr-0">
-                        <motion.span variants={headlineWord} className="inline-block">
-                          {word}
-                        </motion.span>
-                      </span>
-                    ))}
+                    {line.split(' ').map((word, wi) => {
+                      const isHighlighted = highlightWords.includes(word);
+                      return (
+                        <span key={wi} className="inline-block overflow-hidden pb-1 pr-[0.22em] align-bottom last:pr-0">
+                          <motion.span variants={headlineWord} className="inline-block">
+                            {isHighlighted ? (
+                              <motion.span
+                                animate={reducedMotion ? undefined : { color: HIGHLIGHT_COLORS }}
+                                transition={
+                                  reducedMotion
+                                    ? undefined
+                                    : { duration: 5, repeat: Infinity, ease: 'easeInOut', times: [0, 0.5, 1] }
+                                }
+                              >
+                                {word}
+                              </motion.span>
+                            ) : (
+                              word
+                            )}
+                          </motion.span>
+                        </span>
+                      );
+                    })}
                   </span>
                 ))}
               </motion.h1>
@@ -79,7 +101,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, ease: EASE, delay: 0.9 }}
-                className="mt-6 max-w-xl text-lg leading-[1.7] text-ink-muted text-pretty"
+                className="mt-5 max-w-xl text-lg leading-[1.7] text-ink-muted text-pretty"
               >
                 {hero.subheadline}
               </motion.p>
@@ -89,7 +111,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: EASE, delay: 1.05 }}
-                className="mt-8 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-6"
+                className="mt-6 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-6"
               >
                 <HeroPrimaryButton to={hero.primaryCta.to}>{hero.primaryCta.label}</HeroPrimaryButton>
                 <HeroSecondaryButton to={hero.secondaryCta.to}>{hero.secondaryCta.label}</HeroSecondaryButton>
@@ -115,7 +137,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: EASE, delay: 1.5 }}
-            className="mt-8 flex items-center justify-center gap-2.5 lg:mt-10"
+            className="mt-6 flex items-center justify-center gap-2.5 lg:mt-8"
           >
             <span className="text-[0.6rem] font-sans font-medium uppercase tracking-[0.3em] text-ink-muted/60">
               Scroll
